@@ -24,6 +24,7 @@ class TransformerBlock(nn.Module):
         self.ffn2 = nn.Linear(self.d_model*4, self.d_model)
         self.layer_norm_1 = nn.LayerNorm(self.d_model)
         self.layer_norm_2 = nn.LayerNorm(self.d_model)
+        self.relu = nn.ReLU()
 
     def forward(self, X):
         # extract shape of seq_len
@@ -68,7 +69,8 @@ class TransformerBlock(nn.Module):
         # ffnn
         ffn1 = self.ffn1(layer_norm_2_output)
         # activation
-        activation = nn.ReLU(ffn1)
+        activation = self.relu(ffn1)
+
         # final layer
         ffn2 = self.ffn2(activation)
         

@@ -25,17 +25,17 @@ class TransformerDecoder(nn.Module):
         self.positional_encoding = PositionalEncoding(d_model = self.d_model)
 
 
-    # forward, assuming X (B, Seq_len, d_model), now it is X (B, Seq_len)
+    # forward, assuming X (B, Seq_len, d_model) earlier, now it is X (B, Seq_len)
     def forward(self, X):
+        device = X.device
         # defining embedding
-        self.x = self.embedding(X)
+        embedding = self.embedding(X)
         seq_len = X.shape[-1]
         d_model = self.d_model
-        pe = self.positional_encoding.calculate_pe(self.x)
+        pe = self.positional_encoding.calculate_pe(embedding)
         # modifying input tensor by adding X + positional encoding
-        input_tensor = self.x + pe
+        input_tensor = embedding + pe
         # this input will go into 6 transformer blocks
-        ## here also I will need to put them automatically
         x = input_tensor.clone()
         for block in self.blocks_list:
             y = block(x)

@@ -27,6 +27,7 @@ class TransformerBlock(nn.Module):
         self.relu = nn.ReLU()
 
     def forward(self, X): 
+        device = X.device
         # extract shape of seq_len
         seq_len = X.shape[1]
         batch_size = X.shape[0]
@@ -46,7 +47,7 @@ class TransformerBlock(nn.Module):
         attn_score = (torch.matmul(Q_heads, K_heads.transpose(-1, -2)))/(math.sqrt(self.dk))
 
         # masking 
-        mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1)
+        mask = torch.triu(torch.ones(seq_len, seq_len, device=X.device), diagonal=1)
         # applying mask
         attn_score_with_mask = attn_score.masked_fill(mask.bool(), -torch.inf)
         # applying softmax

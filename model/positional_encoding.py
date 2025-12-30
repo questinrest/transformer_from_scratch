@@ -23,7 +23,7 @@ class PositionalEncoding(nn.Module):
                     temp.append(self.__sin(pos,i))
                     temp.append(self.__cos(pos,i))
             positional_encoding_vector.append(temp)
-        return torch.tensor(positional_encoding_vector)
+        return torch.tensor(positional_encoding_vector, device=X.device, dtype=X.dtype)
         
                 
     

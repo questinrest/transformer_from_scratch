@@ -26,7 +26,7 @@ class TransformerBlock(nn.Module):
         self.layer_norm_2 = nn.LayerNorm(self.d_model)
         self.relu = nn.ReLU()
 
-    def forward(self, X):
+    def forward(self, X): 
         # extract shape of seq_len
         seq_len = X.shape[1]
         batch_size = X.shape[0]

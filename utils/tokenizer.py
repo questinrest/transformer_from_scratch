@@ -1,11 +1,9 @@
-import torch
-
 class CharTokenizer:
-    def __init__(self, file):
+    def __init__(self, text):
         """initializes with creating stoi and itos"""
         self.chars = []
         self.stoi = {}
-        for char in file:
+        for char in text:
             self.chars.append(char)
         self.chars = sorted(set(self.chars))
 

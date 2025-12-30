@@ -16,6 +16,7 @@ class TransformerDecoder(nn.Module):
         self.linear = nn.Linear(self.d_model, self.vocab_size)
         self.dropout = dropout
         self.blocks = blocks
+        self.embedding = nn.Embedding(num_embeddings=self.vocab_size, embedding_dim=self.d_model)
         # defining transformer blocks
         self.blocks_list = nn.ModuleList()
         for i in range(self.blocks):
@@ -24,13 +25,15 @@ class TransformerDecoder(nn.Module):
         self.positional_encoding = PositionalEncoding(d_model = self.d_model)
 
 
-    # forward, assuming X (B, Seq_len, d_model)
+    # forward, assuming X (B, Seq_len, d_model), now it is X (B, Seq_len)
     def forward(self, X):
-        seq_len = X.shape[1]
-        d_model = X.shape[-1]
-        pe = self.positional_encoding.calculate_pe(X)
+        # defining embedding
+        self.x = self.embedding(X)
+        seq_len = X.shape[-1]
+        d_model = self.d_model
+        pe = self.positional_encoding.calculate_pe(self.x)
         # modifying input tensor by adding X + positional encoding
-        input_tensor = X + pe
+        input_tensor = self.x + pe
         # this input will go into 6 transformer blocks
         ## here also I will need to put them automatically
         x = input_tensor.clone()

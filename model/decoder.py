@@ -7,11 +7,13 @@ from model.transformer_block import TransformerBlock
 
 
 class TransformerDecoder(nn.Module):
-    def __init__(self, d_model, h, dropout, blocks, vocab_size):
+    def __init__(self, d_model, h, dropout, blocks, vocab_size, seq_len):
         super(TransformerDecoder, self).__init__()
         self.d_model = d_model
         self.h = h
         self.vocab_size = vocab_size
+        self.seq_len = seq_len
+        self.pe = PositionalEncoding(self.d_model, self.seq_len)
         self.layernorm = nn.LayerNorm(self.d_model)
         self.linear = nn.Linear(self.d_model, self.vocab_size)
         self.dropout = dropout
@@ -32,7 +34,7 @@ class TransformerDecoder(nn.Module):
         embedding = self.embedding(X)
         seq_len = X.shape[-1]
         d_model = self.d_model
-        pe = self.positional_encoding.calculate_pe(embedding)
+        pe = self.pe(embedding)
         # modifying input tensor by adding X + positional encoding
         input_tensor = embedding + pe
         # this input will go into 6 transformer blocks

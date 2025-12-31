@@ -34,9 +34,9 @@ class TransformerDecoder(nn.Module):
         embedding = self.embedding(X)
         seq_len = X.shape[-1]
         d_model = self.d_model
-        pe = self.pe(embedding)
+        p = self.pe(embedding)
         # modifying input tensor by adding X + positional encoding
-        input_tensor = embedding + pe
+        input_tensor = embedding + p
         # this input will go into 6 transformer blocks
         x = input_tensor.clone()
         for block in self.blocks_list:

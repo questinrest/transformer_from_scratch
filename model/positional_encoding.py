@@ -16,9 +16,9 @@ class PositionalEncoding(nn.Module):
                 temp.append(math.cos(pos / (10000 ** (2 * i / d_model))))
             positional_encoding_vector.append(temp)
 
-        self.pe = torch.tensor(positional_encoding_vector, dtype=torch.float32)
+        pe = torch.tensor(positional_encoding_vector, dtype=torch.float32)
 
-        self.register_buffer("pe", self.pe)
+        self.register_buffer("pe", pe)
 
     def forward(self, X):
         """

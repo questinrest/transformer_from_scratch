@@ -2,3 +2,4 @@ numpy
 torch
 ipykernel
 pandas
+wandb
